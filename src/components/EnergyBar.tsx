@@ -1,30 +1,33 @@
 
+import React from 'react';
 import { cn } from '@/lib/utils';
 
 interface EnergyBarProps {
   current: number;
   max: number;
-  showText?: boolean;
   className?: string;
+  showValue?: boolean;
 }
 
-const EnergyBar = ({ current, max, showText = true, className }: EnergyBarProps) => {
+const EnergyBar: React.FC<EnergyBarProps> = ({ 
+  current, 
+  max, 
+  className, 
+  showValue = false 
+}) => {
   const percentage = Math.max(0, Math.min(100, (current / max) * 100));
   
   return (
-    <div className={cn("w-full", className)}>
-      {showText && (
-        <div className="flex justify-between text-xs font-medium mb-1">
-          <span>KI</span>
-          <span>{current}/{max}</span>
+    <div className={cn('h-2 bg-gray-200 rounded-full overflow-hidden relative', className)}>
+      <div 
+        className="h-full bg-energy-ki transition-all duration-300 ease-out"
+        style={{ width: `${percentage}%` }}
+      />
+      {showValue && (
+        <div className="absolute inset-0 flex items-center justify-center text-xs text-white font-bold">
+          {current}/{max}
         </div>
       )}
-      <div className="ki-bar">
-        <div 
-          className="ki-bar-fill"
-          style={{ width: `${percentage}%` }}
-        />
-      </div>
     </div>
   );
 };

@@ -108,7 +108,7 @@
   
   .battle-field {
     @apply relative overflow-hidden rounded-lg bg-cover bg-center;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/public/lovable-uploads/56e4b4d8-d9d7-4826-a98c-80d7e5f02483.png');
+    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('/lovable-uploads/56e4b4d8-d9d7-4826-a98c-80d7e5f02483.png');
   }
   
   .character-portrait {
@@ -150,9 +150,12 @@
       0 -3px 0 0 #000,
       0 3px 0 0 #000;
   }
+  
+  .shadow-text {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
 }
 
-/* Custom animations and transitions */
 .page-transition-enter {
   opacity: 0;
   transform: translateY(20px);
