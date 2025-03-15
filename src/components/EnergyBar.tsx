@@ -7,24 +7,38 @@ interface EnergyBarProps {
   max: number;
   className?: string;
   showValue?: boolean;
+  size?: 'sm' | 'md' | 'lg';
 }
 
 const EnergyBar: React.FC<EnergyBarProps> = ({ 
   current, 
   max, 
   className, 
-  showValue = false 
+  showValue = false,
+  size = 'md'
 }) => {
   const percentage = Math.max(0, Math.min(100, (current / max) * 100));
   
+  const getSizeClass = () => {
+    switch(size) {
+      case 'sm': return 'h-1.5';
+      case 'lg': return 'h-3';
+      default: return 'h-2';
+    }
+  };
+  
   return (
-    <div className={cn('h-2 bg-gray-200 rounded-full overflow-hidden relative', className)}>
+    <div className={cn('bg-gray-200 rounded-full overflow-hidden relative', getSizeClass(), className)}>
       <div 
         className="h-full bg-energy-ki transition-all duration-300 ease-out"
         style={{ width: `${percentage}%` }}
       />
       {showValue && (
-        <div className="absolute inset-0 flex items-center justify-center text-xs text-white font-bold">
+        <div className={cn("absolute inset-0 flex items-center justify-center text-white font-bold", 
+          size === 'sm' ? 'text-[10px]' : 
+          size === 'lg' ? 'text-sm' : 
+          'text-xs'
+        )}>
           {current}/{max}
         </div>
       )}

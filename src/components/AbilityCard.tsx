@@ -1,5 +1,6 @@
 
 import { cn } from '@/lib/utils';
+import { Clock, Zap } from 'lucide-react';
 
 interface AbilityCardProps {
   id: string;
@@ -42,50 +43,58 @@ const AbilityCard = ({
     special: 'text-dbz-purple',
   };
   
+  const typeBgColors = {
+    physical: 'bg-dbz-red',
+    energy: 'bg-dbz-blue',
+    defense: 'bg-dbz-green',
+    special: 'bg-dbz-purple',
+  };
+  
   return (
     <div
       className={cn(
-        'ability-card group',
-        disabled ? 'opacity-60 cursor-not-allowed' : 'ability-shine',
+        'ability-card group p-3 border rounded-lg transition-all duration-300',
+        disabled ? 'opacity-60 cursor-not-allowed bg-gray-50' : 'hover:shadow-md cursor-pointer',
+        currentCooldown > 0 ? 'grayscale' : '',
+        typeColors[type],
         className
       )}
-      onClick={disabled ? undefined : onClick}
+      onClick={disabled || currentCooldown > 0 ? undefined : onClick}
     >
-      <div className="flex gap-2">
-        <div className="w-12 h-12 rounded overflow-hidden shrink-0 border border-gray-200">
+      <div className="flex gap-3">
+        <div className="w-14 h-14 rounded-lg overflow-hidden shrink-0 border border-gray-200 bg-white">
           <img src={image} alt={name} className="w-full h-full object-cover" />
         </div>
         <div className="flex-1 min-w-0">
-          <h4 className="font-bold text-sm leading-tight truncate">{name}</h4>
-          <p className="text-xs text-gray-700 line-clamp-2 group-hover:line-clamp-none transition-all duration-300">
+          <div className="flex justify-between items-start">
+            <h4 className="font-bold text-sm leading-tight truncate">{name}</h4>
+            <span className={cn(
+              'text-xs px-1.5 py-0.5 rounded font-medium text-white',
+              typeBgColors[type]
+            )}>
+              {type.charAt(0).toUpperCase() + type.slice(1)}
+            </span>
+          </div>
+          <p className="text-xs text-gray-700 mt-1 line-clamp-2 group-hover:line-clamp-none transition-all duration-300">
             {description}
           </p>
         </div>
       </div>
       
-      <div className="flex justify-between items-center mt-2 text-xs font-medium">
-        <span className={`px-1.5 py-0.5 rounded ${typeColors[type]}`}>
-          <span className={typeTextColors[type]}>{type.charAt(0).toUpperCase() + type.slice(1)}</span>
-        </span>
-        <div className="flex items-center gap-2">
-          <div className="flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-dbz-yellow" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
-            </svg>
-            <span>{kiCost}</span>
-          </div>
-          <div className="flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-dbz-blue" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
-            </svg>
-            <span>{cooldown}</span>
-          </div>
+      <div className="flex justify-between items-center mt-3 pt-2 border-t border-gray-200/50 text-xs font-medium">
+        <div className="flex items-center">
+          <Zap className="h-3.5 w-3.5 mr-1 text-dbz-yellow" />
+          <span>Cost: {kiCost}</span>
+        </div>
+        <div className="flex items-center">
+          <Clock className="h-3.5 w-3.5 mr-1 text-dbz-blue" />
+          <span>CD: {cooldown}</span>
         </div>
       </div>
       
       {currentCooldown > 0 && (
-        <div className="move-cooldown">
-          <span>{currentCooldown}</span>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black/70 text-white rounded-full w-12 h-12 flex items-center justify-center text-lg font-bold animate-pulse">
+          {currentCooldown}
         </div>
       )}
     </div>
