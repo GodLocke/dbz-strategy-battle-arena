@@ -87,6 +87,12 @@ export default {
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
 			},
+			textShadow: {
+				sm: '1px 1px 2px rgba(0, 0, 0, 0.1)',
+				DEFAULT: '2px 2px 0px rgba(0, 0, 0, 0.2)',
+				lg: '3px 3px 0px rgba(0, 0, 0, 0.2)',
+				xl: '4px 4px 0px rgba(0, 0, 0, 0.2)',
+			},
 			keyframes: {
 				'accordion-down': {
 					from: { height: '0' },
@@ -148,5 +154,21 @@ export default {
 			}
 		}
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [
+		require("tailwindcss-animate"),
+		// Add text shadow plugin
+		function({ addUtilities, theme, variants }) {
+			const textShadows = theme('textShadow', {});
+			const textShadowUtilities = Object.entries(textShadows).reduce(
+				(utilities, [key, value]) => ({
+					...utilities,
+					[`.text-shadow${key === 'DEFAULT' ? '' : `-${key}`}`]: {
+						'text-shadow': value,
+					},
+				}),
+				{}
+			);
+			addUtilities(textShadowUtilities, variants('textShadow'));
+		}
+	],
 } satisfies Config;
